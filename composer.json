@@ -1,0 +1,43 @@
+{
+    "name": "f_roepstorf/static-cache-buster",
+    "description": "Warm the Statamic static cache without causing cache misses for visitors",
+    "type": "statamic-addon",
+    "version": "0.1.0",
+    "autoload": {
+        "psr-4": {
+            "FRoepstorf\\StaticCacheBuster\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FRoepstorf\\StaticCacheBuster\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "statamic/cms": "^5.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "driftingly/rector-laravel": "^2.0",
+        "laravel/pint": "^1.22",
+        "shipmonk/composer-dependency-analyser": "^1.8"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Static Cache Buster",
+            "description": "Warm the Statamic static cache without causing cache misses for visitors"
+        },
+        "laravel": {
+            "providers": [
+                "FRoepstorf\\StaticCacheBuster\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
