@@ -22,6 +22,14 @@ It is also very handy, when you use multiple nested components to render pages: 
 composer require f_roepstorf/static-cache-buster
 ```
 
+For production environments, it's recommended to install with the `--prefer-dist` flag:
+
+```bash
+composer require f_roepstorf/static-cache-buster --prefer-dist
+```
+
+This ensures only the necessary files are installed, excluding development files like tests and configuration.
+
 ## Usage
 
 Run the cache buster command:
