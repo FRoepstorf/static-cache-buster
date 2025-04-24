@@ -18,6 +18,41 @@ composer require f_roepstorf/static-cache-buster
 
 The addon will automatically register its service provider and extend Statamic's static cache manager to use the enhanced cacher.
 
+## Nginx Configuration
+
+If you're using Nginx with the default Statamic static caching setup, you'll need to add the following to your server configuration to properly handle the cache buster header:
+
+```nginx
+set $try_location @static;
+
+if ($request_method != GET) {
+    set $try_location @not_static;
+}
+
+if ($args ~* "live-preview=(.*)") {
+    set $try_location @not_static;
+}
+
+# Skip static cache when cache buster header is present
+if ($http_x_statamic_cache_buster = "true") {
+    set $try_location @not_static;
+}
+
+location / {
+    try_files $uri $try_location;
+}
+
+location @static {
+    try_files /static/${host}${uri}_$args.html $uri $uri/ /index.php?$args;
+}
+
+location @not_static {
+    try_files $uri /index.php?$args;
+}
+```
+
+This configuration ensures that requests with the `X-Statamic-Cache-Buster` header bypass the static cache and pass through to PHP.
+
 ## Usage
 
 Run the cache buster command:
@@ -44,7 +79,7 @@ The command supports various options:
 ## Requirements
 
 - Statamic 5.x
-- PHP 7.4 or higher
+- PHP 8.2 or higher(might work with lower versions)
 - Static caching must be enabled and configured to use the file driver
 
 ## License

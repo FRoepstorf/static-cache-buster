@@ -20,25 +20,23 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
 
       - name: Install dependencies
-        run: |
-          composer install --no-interaction
-          cd tools
-          composer install --no-interaction
+        run: composer install --no-interaction
 
       - name: Run PHPStan
-        run: ./tools/vendor/bin/phpstan analyse --memory-limit=2G
+        run: make phpstan
 
       - name: Run Laravel Pint
-        run: ./tools/vendor/bin/pint
+        run: make csfix
 
       - name: Run Rector
-        run: ./tools/vendor/bin/rector --dry-run
+        run: make rector
+
   php_tests:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         php: [8.2, 8.3, 8.4]
         laravel: [^10.40, ^11.34, ^12.0]
-        os: [ubuntu-latest]
         include:
           - laravel: ^10.40
             testbench: 8.*
@@ -46,9 +44,7 @@ jobs:
             testbench: 9.*
           - laravel: ^12.0
             testbench: 10.*
-    name: ${{ matrix.php }} - ${{ matrix.laravel }}
-
-    runs-on: ${{ matrix.os }}
+    name: Tests PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
@@ -60,16 +56,14 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
 
+      - name: Remove analysis dependencies
+        run: |
+          composer remove --dev --no-update larastan/larastan phpstan/phpstan shipmonk/composer-dependency-analyser driftingly/rector-laravel laravel/pint
+
       - name: Install dependencies
         run: |
-          composer require --dev "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}"
-          composer install --no-interaction
+          composer require --dev --no-update "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}"
+          composer update --prefer-dist --no-interaction
 
-      - name: Run csfix
-        run: make csfix
-
-      - name: Run phpstan
-        run: make phpstan
-
-      - name: Run rector
-        run: make rector
+      - name: Run tests
+        run: make test
