@@ -47,7 +47,6 @@ class StaticCacheBusterCommand extends Command
         {--include= : Only warm specific URLs}
         {--exclude= : Exclude specific URLs}
         {--max-requests= : Maximum number of requests to warm}
-        {--temp-dir= : Temporary directory for cache files}
     ';
 
     protected $description = 'Warms the static cache by visiting all URLs and safely swapping the cache directory';
@@ -151,9 +150,6 @@ class StaticCacheBusterCommand extends Command
             'auth'   => $this->option('user') && $this->option('password')
                 ? [$this->option('user'), $this->option('password')]
                 : null,
-            'headers' => [
-                'X-Statamic-Cache-Buster' => 'true',
-            ],
         ];
     }
 
