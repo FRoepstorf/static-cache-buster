@@ -79,7 +79,7 @@ The command supports various options:
 ## Requirements
 
 - Statamic 5.x
-- PHP 8.2 or higher(might work with lower versions)
+- PHP 8.1 or higher(might work with lower versions)
 - Static caching must be enabled and configured to use the file driver
 
 ## License
