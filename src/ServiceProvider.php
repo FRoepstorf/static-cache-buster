@@ -24,15 +24,21 @@ class ServiceProvider extends AddonServiceProvider
         parent::register();
 
         // Extend the StaticCacheManager to use our custom file cacher
-        $this->app->extend(StaticCacheManager::class, function ($manager, $app) {
+        $this->app->extend(StaticCacheManager::class, function (StaticCacheManager $staticCacheManager, $app) {
             // We need to add the createFileDriver method to the manager
-            $manager->extend('file', fn ($app, $config) => new CacheBusterFileCacher(
-                new Writer($config['permissions'] ?? []),
-                Cache::store($this->hasCustomStore() ? 'static_cache' : null),
-                $config
-            ));
+            $staticCacheManager->extend('file', function ($app, array $config) {
+                $permissions = isset($config['permissions']) && is_array($config['permissions'])
+                    ? $config['permissions']
+                    : [];
 
-            return $manager;
+                return new CacheBusterFileCacher(
+                    new Writer($permissions),
+                    Cache::store($this->hasCustomStore() ? 'static_cache' : null),
+                    $config
+                );
+            });
+
+            return $staticCacheManager;
         });
     }
 

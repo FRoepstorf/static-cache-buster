@@ -16,3 +16,7 @@ test: ## Runs phpunit
 .PHONY: composer-check
 composer-check: ## Checks composer.json and composer.lock
 	./vendor/bin/composer-dependency-analyser --ignore-shadow-deps
+
+.PHONY: phpstan
+phpstan: ## Runs phpstan
+	./vendor/bin/phpstan analyse --memory-limit=1G

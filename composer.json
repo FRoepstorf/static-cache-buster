@@ -2,7 +2,7 @@
     "name": "f_roepstorf/static-cache-buster",
     "description": "Warm the Statamic static cache without causing cache misses for visitors",
     "type": "statamic-addon",
-    "version": "0.1.0",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "FRoepstorf\\StaticCacheBuster\\": "src"
@@ -20,7 +20,8 @@
         "orchestra/testbench": "^9.0",
         "driftingly/rector-laravel": "^2.0",
         "laravel/pint": "^1.22",
-        "shipmonk/composer-dependency-analyser": "^1.8"
+        "shipmonk/composer-dependency-analyser": "^1.8",
+        "larastan/larastan": "^3.0"
     },
     "config": {
         "allow-plugins": {
