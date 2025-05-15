@@ -6,10 +6,10 @@ namespace FRoepstorf\StaticCacheBuster;
 
 use FRoepstorf\StaticCacheBuster\Commands\StaticCacheBusterCommand;
 use FRoepstorf\StaticCacheBuster\StaticCaching\CacheBusterFileCacher;
+use FRoepstorf\StaticCacheBuster\StaticCaching\Caching\TruncateWriter;
 use Illuminate\Support\Facades\Cache;
 use Override;
 use Statamic\Providers\AddonServiceProvider;
-use Statamic\StaticCaching\Cachers\Writer;
 use Statamic\StaticCaching\StaticCacheManager;
 
 class ServiceProvider extends AddonServiceProvider
@@ -32,7 +32,7 @@ class ServiceProvider extends AddonServiceProvider
                     : [];
 
                 return new CacheBusterFileCacher(
-                    new Writer($permissions),
+                    new TruncateWriter($permissions),
                     Cache::store($this->hasCustomStore() ? 'static_cache' : null),
                     $config
                 );
