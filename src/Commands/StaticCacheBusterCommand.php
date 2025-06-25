@@ -14,7 +14,7 @@ use Illuminate\Console\Command;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
+use Statamic\Support\Str;
 use Statamic\Console\Commands\StaticWarmJob;
 use Statamic\Console\Commands\StaticWarmUncachedJob;
 use Statamic\Console\EnhancesCommands;
